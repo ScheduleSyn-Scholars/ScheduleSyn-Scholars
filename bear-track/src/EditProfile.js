@@ -5,7 +5,7 @@ import { Avatar }from "antd";
 import { Link} from "react-router-dom";
 
 class EditProfile extends Component {
-
+    
 
     render(){
         return (

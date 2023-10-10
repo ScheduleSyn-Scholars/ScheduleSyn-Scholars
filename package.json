@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "antd": "^5.9.4",
     "firebase": "^10.4.0",
     "react-avatar-edit": "^1.2.0",
     "react-router-dom": "^6.16.0",
