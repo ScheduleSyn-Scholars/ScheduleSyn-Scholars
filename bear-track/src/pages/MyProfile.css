@@ -52,14 +52,14 @@ h1{
   background-color: #3e8e41;
 }
 .img-display-before{
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   margin-left: 35px;
 }
 
 .img-display-after{
-  height: 200px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
   border-radius: 100%;
 }
 .emailStyle{
@@ -99,7 +99,7 @@ h1{
 }
 .website-logo img{
   border-radius: 40%;
-  width: 200px;
+  width: 175px;
     height: 175px;
 }
 .titleStyle{
@@ -125,13 +125,13 @@ h1{
   top:400px;
   left: 37px;
   height: 215px;
-  width: 275px;
+  width: 215px;
   border-radius: 100%;
 }
 .confirmed-name{
   position: absolute;
   top:625px;
-  left:40px;
+  left: 90px;
   font-family: 'Times New Roman', Times, serif;
   font-size: 30px;
   color:#666666;

@@ -93,11 +93,7 @@ function MyProfile(){
          <h1>
           My Profile
         </h1>
-        <div className='homeButton'>
-          <Link to='/HomePage'>
-          <img src='./LOGO_BB_EU1024x1024_rond.png' alt='home button link'/>
-          </Link>
-        </div>
+        
         <div className = "image-upload-container">
           <div className='box-decoration'>
           <label htmlFor='image-upload-input' className = "image-upload-label">
@@ -124,10 +120,16 @@ function MyProfile(){
         <div className='website-logo'><img src='./BearLogo.png' alt='GGC Logo'/> 
         <div className='titleStyle'>DataWise</div>
         </div>
-        <div>
-          {image ?<img src = {URL.createObjectURL(image)} alt = "Curious" className='profile-picture-confirmer'/> : <img src = "./Screenshot 2023-09-15 at 1.46 1.png" alt = "Profile Live" className='profile-picture-confirmer'/> }
+
+
+        <Link to = '/HomePage'>
+          <div>
+          {image ?<img src = {URL.createObjectURL(image)} alt = "Curious" className='profile-picture-confirmer'/> : <img src = "./Screenshot 2023-09-15 at 1.46 1.png" alt = "Profile Live" className='profile-picture-confirmer'/ > } 
           <div className='confirmed-name' onChange={handleProfileNameChange}>{profileName}</div>
-        </div>
+          </div>
+          </Link>
+
+
         
         <div className='border-divide'></div>
        
