@@ -241,13 +241,7 @@ const NewCalendar = () =>{
 
         </div>
         </div>
-        <button className = "create-btn" onClick={handleCreate}>
-          Create
-          </button>
-
-       
-  
-    
+        <button className = "create-btn" onClick={handleCreate}>Create</button>
       </div>
   );
 }
