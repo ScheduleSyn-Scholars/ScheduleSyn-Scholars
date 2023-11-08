@@ -59,7 +59,7 @@ const HomePage = () => {
 
   return (
     <div className="homepage">
-      <h1>My Calendar</h1>
+      <h1 className='title'>My Calendar</h1>
       <div className = "left-panel">
       </div>
       <div className='logo-photo'>

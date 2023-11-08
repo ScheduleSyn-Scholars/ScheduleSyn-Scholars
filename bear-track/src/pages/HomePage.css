@@ -1,21 +1,29 @@
 .body{
   height: auto;
-  width: 100%;
+  width: 100vw;
+}
+.title{
+  position: absolute;
+  font-size: 50px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #0E724C;
 }
 .homepage {
     background-color: #ffffff;
     display: flex;
     height: 100vh;
-    width: 100%;
+    width: 100vw;
   }
   
   .left-panel{
     position:absolute;
     margin-left: 0px;
     height:100vh;
-    width: 20%;
+    width: 25vw;
     background-color: rgb(255, 255, 255);
     border-width: 2px;
+    border-right: 3px solid #b9b9b9;
+    box-shadow: 0 0 10px rgba(0,0,0,0);
 
   }
   .logo-photo{
@@ -26,10 +34,9 @@
     text-align: center;
   }
   .logo-photo img{
-    width: 180px;
-    height: 150px;
+    width: 30vh;
+    height: 25vh;
     border-radius: 40%;
-    overflow: hidden;
     box-shadow: 0px 0px 0px rgba(0,0,0,0.25);
   }
   .titleStyle{
@@ -41,14 +48,13 @@
     margin-left: -30px;
   }
   .user-photo {
-    width: 180px;
-    height: 180px;
+    width: 25vh;
+    height: 25vh;
     background: #ccc;
     border-radius:80%;
-    margin-top: 10px;
-    position:absolute;
-    top:380px;
-    left:55px;
+    margin-left: -200px;
+    margin-top: 55vh;
+    position: absolute;
   }
 
   .profileName{
@@ -63,10 +69,10 @@
     position:absolute;
     background-color: rgb(255, 255, 255);
     margin-left: 70%;
-    width: 30%;
+    width: 25vw;
     height:100vh;
     box-shadow: 0 0 10px rgba(0,0,0,0);
-    border-left: 2px solid #666666;
+    border-left: 3px solid #b9b9b9;
 
   }
   .calendarName{
@@ -82,8 +88,8 @@
   
   .logout-button {
     position:absolute;
-    top: 735px;
-    left:100px;
+    top: 90%;
+    left: 5%;
     background: #ff0000;
     padding: 10px;
     border: none;
@@ -135,7 +141,7 @@
 
  .react-calendar {
   margin-top: 20%;
-  margin-left: 30%;
+  margin-left: 17vw;
   width: 350px;
   height: 300px;
   max-width: 100%;
