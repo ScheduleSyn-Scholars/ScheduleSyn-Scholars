@@ -4,6 +4,7 @@ import firebase from '../config/firebase'; // Import your firebase.js file
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import 'firebase/compat/firestore';
+import Calendar from 'react-calendar';
 
 
 const HomePage = () => {
@@ -73,6 +74,11 @@ const HomePage = () => {
 
         <div className='profileName' >{userName}</div>
 
+      <Calendar className = "calendar"
+      minDate={new Date()}
+      view='month'
+      onClickDay={(date) => {console.log(date)}}
+      />
           
       
         <Link to="/">
