@@ -4,7 +4,8 @@ import firebase from '../config/firebase'; // Import your firebase.js file
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import 'firebase/compat/firestore';
-import Calendar from 'react-calendar';
+import MyCalendar from '../components/Calendar/Calendar';
+import { updateSelectedDate } from '../components/Calendar/EventService';
 
 
 const HomePage = () => {
@@ -57,6 +58,24 @@ const HomePage = () => {
   console.log(firebase.auth().currentUser.uid)
   loadFirestoreDocument(firebase.auth().currentUser.uid)  
 
+
+  const handleDayClick = (date) => {
+    setSelectedDate(date);
+  };
+
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  
+
+  const handleSubmit = async () => {
+    try {
+      const userUid = firebase.auth().currentUser.uid;
+      await updateSelectedDate(userUid, selectedDate);
+    } catch (error) {
+      // Handle error
+    }
+  };
+
   return (
     <div className="homepage">
       <h1 className='title'>My Calendar</h1>
@@ -74,11 +93,12 @@ const HomePage = () => {
 
         <div className='profileName' >{userName}</div>
 
-      <Calendar className = "calendar"
+      <MyCalendar className = "calendar"
       minDate={new Date()}
       view='month'
-      onClickDay={(date) => {console.log(date)}}
+      onClickDay={handleDayClick}
       />
+      <button onClick={handleSubmit}className='submitCalendarButton'>Submit</button>
           
       
         <Link to="/">
