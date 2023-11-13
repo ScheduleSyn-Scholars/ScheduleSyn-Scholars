@@ -4,7 +4,7 @@ import './NewCalendar.css';
 import { Link } from 'react-router-dom';
 import firebase from '../config/firebase';
 import 'firebase/compat/firestore';
-import { message } from 'antd';
+
 
 const NewCalendar = () =>{
   const [inputValue, setInputValue] = useState('');
@@ -36,7 +36,7 @@ const NewCalendar = () =>{
   const dataReading = async(uuid) => {
     try{
         const userReference = firestore.collection('users').doc(uuid);
-        console.log(uuid);
+        //console.log(uuid);
         const userDoc = await userReference.get();
         if(userDoc.exists){
           console.log('Printing from userDoc: ', userDoc.data);

@@ -66,7 +66,7 @@ const Login = () => {
           <div className = 'buttonContainer'>
           <button type="button" onClick={handleSignIn}>Login</button>
           <Link to = "/sign-up">
-            <button type='button' className='sign-up-btn'>sign-up</button>
+            <button type='button' className='sign-up-btn'>Sign Up</button>
           </Link>
           </div>
         </form>

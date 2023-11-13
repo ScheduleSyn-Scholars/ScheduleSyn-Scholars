@@ -4,15 +4,16 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Login from './pages/Login';
 import ViewCalendar from './pages/ViewCalendar';
-import Registration from "./pages/Registration"
+import Registration from "./pages/Registration";
 import Homepage from './pages/HomePage';
 import MyProfile from "./pages/MyProfile";
 import NewCalendar from "./pages/NewCalendar";
+import { UserProvider } from './pages/UserContext';
 
 
 function App() {
   return (
-    <>
+    <UserProvider>
     <Router>
       <div className="App">
         <Header />
@@ -27,7 +28,7 @@ function App() {
         <Footer />
       </div>
     </Router>
-    </>
+    </UserProvider>
   );
 }
 export default App;

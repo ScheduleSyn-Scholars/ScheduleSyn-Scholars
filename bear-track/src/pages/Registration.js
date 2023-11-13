@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './Registration.css'
 import firebase from '../config/firebase';
 import 'firebase/compat/firestore';
+import { Link } from 'react-router-dom';
 
 
 const Form = () => {
@@ -71,12 +72,17 @@ const Form = () => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
             });
+
+        //     <Link to="/">
+        // <button className="go-back-button">Go Back</button>
+        // </Link>
               
           }         
   
   return (
     // Form to get the data
     <>
+    <h1>Registration Page</h1>
     <div className='form'>
       <div className='container'>
         
@@ -88,6 +94,7 @@ const Form = () => {
           type="text"
           id="id"
           name="id"
+          placeholder="Enter Your ID"
           value={formData.id}
           onChange={handleInputChange}
         />
@@ -99,6 +106,7 @@ const Form = () => {
           type="text"
           id="firstName"
           name="firstName"
+          placeholder="Enter Your First Name"
           value={formData.firstName}
           onChange={handleInputChange}
         />
@@ -110,6 +118,7 @@ const Form = () => {
           type="text"
           id="lastName"
           name="lastName"
+          placeholder="Enter Your Last Name"
           value={formData.lastName}
           onChange={handleInputChange}
         />
@@ -121,6 +130,7 @@ const Form = () => {
           type="email"
           id="email"
           name="email"
+          placeholder="Enter Your Email"
           value={formData.email}
           onChange={handleInputChange}
         />
@@ -132,12 +142,15 @@ const Form = () => {
           type="password"
           id="password"
           name="password"
+          placeholder="Enter Your Password"
           value={formData.password}
           onChange={handleInputChange}
         />
       </div>
       <div>
+        <Link to="/">
         <button onClick={signUp}>Sign Up</button>
+        </Link>
       </div>
     </form>
       </div>
