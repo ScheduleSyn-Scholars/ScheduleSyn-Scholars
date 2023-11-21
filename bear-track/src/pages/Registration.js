@@ -150,6 +150,7 @@ const Form = () => {
       <div>
         <Link to="/">
         <button onClick={signUp}>Sign Up</button>
+        <button>Go Back</button>
         </Link>
       </div>
     </form>
