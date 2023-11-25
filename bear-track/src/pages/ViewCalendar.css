@@ -140,8 +140,10 @@
 .save-btn:hover{
   background-color: #4CAF50;
 }
-.meeting-section{
+div.meeting-section{
   position: relative;
   margin-left: 50vh;
   margin-top: 20vh;
+  display: flex;
+  flex-direction: row;
 }

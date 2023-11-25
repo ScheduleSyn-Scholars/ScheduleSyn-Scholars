@@ -4,6 +4,8 @@ import 'firebase/compat/firestore';
 import { Link, useParams } from 'react-router-dom';
 import { useUser } from './UserContext';
 import AvailabilityForm from '../components/Calendar/AvailabilityForm';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const ViewCalendar = () => {
   const { calendarId, calendarName } = useParams();
@@ -16,6 +18,7 @@ const ViewCalendar = () => {
   const [bestTimeToMeet, setBestTimeToMeet] = useState(null);
   const [showBestTime, setShowBestTime] = useState(false);
   const [bestTime, setBestTime] = useState(null);
+  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
 
   const firestore = firebase.firestore();
 
@@ -275,6 +278,37 @@ const ViewCalendar = () => {
     }
   };
 
+
+  const createEvent = async (eventData) => {
+    try {
+      const eventsRef = firestore
+      .collection('calendars')
+      .doc(calendarId)
+      .collection('events');
+
+      await eventsRef.add(eventData);
+
+      console.log('Event created successfully!');
+    }catch (error) {
+      console.error('Error creating event:', error);
+    }
+  }
+
+  const handleCreateEvent = async () => {
+    try {
+      const eventData = {
+        name: calendarName, // Use calendarName directly
+        dateTime: selectedDateTime,
+        creator: user.uid,
+        attendees: [user.uid],
+      };
+      console.log('Event Data:', eventData);
+      await createEvent(eventData);
+    } catch (error) {
+      console.error('Error in handleCreateEvent:', error);
+    }
+  }
+
   return (
     <div className="page">
       <div className="pageTitle">{calendarName}</div>
@@ -289,6 +323,16 @@ const ViewCalendar = () => {
 
       
 <div className="meeting-section">
+<DatePicker 
+selected={selectedDateTime}
+onChange={(date) => setSelectedDateTime(date)}
+inline
+showTimeSelect
+dateFormat="Pp"
+ />
+ <button type="button" onClick={handleCreateEvent}>
+  Submit Event
+</button>
         <AvailabilityForm
           className="avform"
           availability={availability}
