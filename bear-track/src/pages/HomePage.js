@@ -7,6 +7,12 @@ import 'firebase/compat/firestore';
 import { useUser } from './UserContext';
 import NotificationPopup from '../components/NotificationPopup';
 import { NotificationsContext } from '../components/NotificationsContext';
+import {Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import CustomEventComponent from '../components/Calendar/CustomEvent';
+
+const localizer = momentLocalizer(moment);
+
 
 const HomePage = () => {
   const user = useUser();
@@ -23,7 +29,10 @@ const HomePage = () => {
   const [notificationCountReset, setNotificationCountReset] = useState(false);
 
   const { notifications, handleAccept, handleDecline } = useContext(NotificationsContext);
+  
+  const [events, setEvents] = useState([]);
 
+  
 
   useEffect(() => {
 
@@ -53,7 +62,55 @@ const HomePage = () => {
 
 }, [notificationCount]);
 
+useEffect(() => {
+  const fetchEvents = async () => {
+    try {
+      const userUid = firebase.auth().currentUser.uid;
+      const userDocRef = firebase.firestore().collection('users').doc(userUid);
 
+      const userDoc = await userDocRef.get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        const calendars = userData.calendars || [];
+
+        const eventsPromises = calendars.map(async (calendar) => {
+          const eventsRef = firebase
+            .firestore()
+            .collection('calendars')
+            .doc(calendar.id)
+            .collection('events');
+
+          const eventsSnapshot = await eventsRef.get();
+          const calendarEvents = eventsSnapshot.docs.map((doc) => {
+            const data = doc.data();
+            const startDateTime = data.dateTime.toDate();
+const formattedTime = startDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+const title = `${calendar.calendarName}\n${formattedTime.replace(/\s+/g, '')}`;
+
+            return {
+              ...data,
+              id: doc.id,
+              title: title,
+              start: data.dateTime.toDate(), // Convert Timestamp to Date
+              end: data.dateTime.toDate(),   // Convert Timestamp to Date
+            };
+          });
+
+          return calendarEvents;
+        });
+
+        const allEvents = await Promise.all(eventsPromises);
+        const flattenedEvents = [].concat(...allEvents);
+
+        setEvents(flattenedEvents);
+      }
+    } catch (error) {
+      console.error('Error loading user calendars:', error);
+    }
+  };
+
+  fetchEvents();
+}, []); 
 
 
 
@@ -141,7 +198,7 @@ const handleBellIconClick = async () => {
   return (
     <div className="homepage">
       <div className='bell'><img src={BellIcon} onClick={handleBellIconClick}/>
-        {notificationCount > 0 && (
+        {notificationCount > 0 && !notificationCountReset && (
           <div className='notification-count'>{notificationCount}</div>
         )}
       </div>
@@ -176,6 +233,23 @@ const handleBellIconClick = async () => {
         <button className="logout-button">Logout</button>
       </Link>
 
+      <div className="center-panel">
+        <Calendar 
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        toolbar={true}
+        onSelectEvent={event => console.log(event)}
+        onSelectSlot={slotInfo => console.log(slotInfo)}
+        timezone="America/New_York"
+        components={{
+          event: CustomEventComponent,
+        }}
+        />
+
+      </div>
+
       <div className = "right-panel">
         <div className = "calendarName">Mutual Calendars</div>
         {loading ? (
@@ -202,4 +276,3 @@ const handleBellIconClick = async () => {
 };
 
 export default HomePage;
-
