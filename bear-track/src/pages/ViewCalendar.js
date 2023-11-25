@@ -243,12 +243,16 @@ const ViewCalendar = () => {
         .doc(calendarId)
         .collection('availability')
         .doc(user.uid);
+
   
       // Update selectedDays based on times object
       const updatedAvailability = {
         ...availability,
         selectedDays: Object.keys(availability.times || {}),
       };
+
+      await availabilityRef.set({ ...updatedAvailability }, { merge: true });
+      
       console.log('availRef" ', updatedAvailability);
       console.log(calendarId);
       await availabilityRef.update({ ...updatedAvailability });
