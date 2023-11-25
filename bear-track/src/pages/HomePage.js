@@ -9,6 +9,7 @@ import NotificationPopup from '../components/NotificationPopup';
 import { NotificationsContext } from '../components/NotificationsContext';
 import {Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import CustomEventComponent from '../components/Calendar/CustomEvent';
 
 const localizer = momentLocalizer(moment);
 
@@ -82,9 +83,14 @@ useEffect(() => {
           const eventsSnapshot = await eventsRef.get();
           const calendarEvents = eventsSnapshot.docs.map((doc) => {
             const data = doc.data();
+            const startDateTime = data.dateTime.toDate();
+const formattedTime = startDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+const title = `${calendar.calendarName}\n${formattedTime.replace(/\s+/g, '')}`;
+
             return {
               ...data,
               id: doc.id,
+              title: title,
               start: data.dateTime.toDate(), // Convert Timestamp to Date
               end: data.dateTime.toDate(),   // Convert Timestamp to Date
             };
@@ -233,12 +239,15 @@ const handleBellIconClick = async () => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 , width: 500}}
         toolbar={true}
         onSelectEvent={event => console.log(event)}
         onSelectSlot={slotInfo => console.log(slotInfo)}
         timezone="America/New_York"
+        components={{
+          event: CustomEventComponent,
+        }}
         />
+
       </div>
 
       <div className = "right-panel">
