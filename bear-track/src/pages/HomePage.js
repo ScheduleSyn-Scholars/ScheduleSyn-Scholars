@@ -44,8 +44,13 @@ const HomePage = () => {
 
   
 
-  useEffect(() => {
+//   useEffect(() => {
 
+  
+
+// }, [notificationCount]);
+
+useEffect(() => {
   const loadUserCalendars = async () => {
     try {
       const userUid = firebase.auth().currentUser.uid;
@@ -69,10 +74,6 @@ const HomePage = () => {
   loadUserCalendars();
 
   console.log('Notification Count after reset: ', notificationCount);
-
-}, [notificationCount]);
-
-useEffect(() => {
   const fetchEvents = async () => {
     try {
       const userUid = firebase.auth().currentUser.uid;
@@ -120,7 +121,7 @@ const title = `${calendar.calendarName}\n${formattedTime.replace(/\s+/g, '')}`;
   };
 
   fetchEvents();
-}, []); 
+}, [notificationCount]); 
 
 
 
@@ -208,7 +209,7 @@ const handleBellIconClick = async () => {
   return (
     <div className="homepage">
       <div className='bell'><img src={BellIcon} onClick={handleBellIconClick}/>
-        {notificationCount > 0 && !notificationCountReset && (
+        {notificationCount > 0 && (
           <div className='notification-count'>{notificationCount}</div>
         )}
       </div>
