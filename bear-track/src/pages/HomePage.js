@@ -15,6 +15,7 @@ const localizer = momentLocalizer(moment);
 
 
 const HomePage = () => {
+  const [image, setImage] = useState("");
   const user = useUser();
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState('');
@@ -31,6 +32,15 @@ const HomePage = () => {
   const { notifications, handleAccept, handleDecline } = useContext(NotificationsContext);
   
   const [events, setEvents] = useState([]);
+
+  if (user.imageURL == null){
+    console.log("Printing from image addition My Profile")
+    user.image = './Screenshot 2023-09-15 at 1.46 1.png';
+  } else{
+    user.image = user.imageURL;
+    //console.log("Printing from successful image addition My Profile: ", user.imageURL)
+
+  }
 
   
 
