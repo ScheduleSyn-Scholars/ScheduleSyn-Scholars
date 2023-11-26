@@ -90,7 +90,7 @@ const NotificationsProvider = ({ children }) => {
     
               
               //navigate(`/ViewCalendar/${calendarId}`);
-              window.location.href = `/ViewCalendar/${calendarId}`;
+              //window.location.href = `/ViewCalendar/${calendarId}`;
                 const updatedNotifications = [...notifications];
                 updatedNotifications.splice(index, 1);
                 setNotifications(updatedNotifications);
