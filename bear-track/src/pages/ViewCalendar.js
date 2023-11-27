@@ -319,9 +319,7 @@ const ViewCalendar = () => {
 
       
           <div className="profilePicture">
-<Link to="/MyProfile">
-  {user && user.image && <img alt="User profile" src={user.image} className='profilePhoto'/>}
-</Link>
+
 <div className='username'>{user && user.userName}</div>
 </div>
 

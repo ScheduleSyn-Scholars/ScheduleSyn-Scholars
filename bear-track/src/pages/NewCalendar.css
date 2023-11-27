@@ -86,7 +86,7 @@ word-wrap: break-word;
   height:750px;
   margin-right: 64%;
   background-color: white;
-  height:90vh;
+  height:6vh;
   width: 0vh;
 }
 
@@ -105,8 +105,9 @@ word-wrap: break-word;
         height: 35px;
         border-radius: 15px;
         position: relative;
-        margin-top: 3vh;
-        margin-left: 83vh;
+        margin-top: 0vh;
+        margin-bottom: 5vh;
+        margin-left: 90vh;
         line-height: 10px;
          /* Remove underline */
       }
@@ -130,8 +131,9 @@ word-wrap: break-word;
     height:35px;
     border-radius: 15px;
     position: relative;
-    margin-top: 70vh;
-    margin-left: 83vh;
+    margin-top: 50vh;
+    margin-bottom: 20vh;
+    margin-left: 90vh;
     display: flex;
   align-items: center;
   justify-content: center;
