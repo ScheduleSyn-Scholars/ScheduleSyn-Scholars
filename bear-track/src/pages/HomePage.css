@@ -6,6 +6,8 @@
   height: 90vh;
 }
 
+
+
 .left-panel{
   position:relative;
   height:750px;
@@ -134,7 +136,7 @@ word-wrap: "break-word";
 width:150px;
 height:35px;
 margin-left:4vh;
-margin-top:5vh;
+margin-top:6vh;
 border-radius: 15px;
 align-items: center;
 justify-content: center;
