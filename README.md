@@ -22,13 +22,13 @@ The GGC Scheduling App is a product that aims to simplify scheduling, making it 
 ## Developer Installation
 1. Clone the Git Repository:
   
-    `git clone https://github.com/ScheduleSyn-Scholars/ScheduleSyn-Scholars.git`
+    >`git clone https://github.com/ScheduleSyn-Scholars/ScheduleSyn-Scholars.git`
  
 3. Run the npm installs:
    
-   `npm install`
+   >`npm install`
    
-   `npm install react-spinners`
+   >`npm install react-spinners`
    
 5. After all Packages are installed, You can run the program by entering `npm start` in the terminal
    
