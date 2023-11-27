@@ -6,6 +6,7 @@ import { useUser } from './UserContext';
 import AvailabilityForm from '../components/Calendar/AvailabilityForm';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './ViewCalendar.css';
 
 const ViewCalendar = () => {
   const { calendarId, calendarName } = useParams();
@@ -316,30 +317,34 @@ const ViewCalendar = () => {
   return (
     <div className="page">
       <div className="pageTitle">{calendarName}</div>
-
-      
-          <div className="profilePicture">
-
-<div className='username'>{user && user.userName}</div>
-</div>
-
-      
+     
 <div className="meeting-section">
-<DatePicker 
+<div className="avform">
+<AvailabilityForm
+          className="avform"
+          availability={availability}
+          onAvailabilityChange={handleAvailabilityChange}
+        />
+        </div>
+
+<div className="datepicker">
+<DatePicker
+classname="datepicker"
 selected={selectedDateTime}
 onChange={(date) => setSelectedDateTime(date)}
 inline
 showTimeSelect
 dateFormat="Pp"
  />
- <button type="button" onClick={handleCreateEvent}>
+</div>
+<div className="SubmitEvent">
+<button type="button" onClick={handleCreateEvent}>
   Submit Event
 </button>
-        <AvailabilityForm
-          className="avform"
-          availability={availability}
-          onAvailabilityChange={handleAvailabilityChange}
-        />
+</div>
+
+
+
         <button className="saveButton" type="button" onClick={() => updateAvailability()}>
           Save
         </button>
