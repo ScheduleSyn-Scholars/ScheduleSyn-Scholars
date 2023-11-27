@@ -128,8 +128,8 @@ border:none;
 cursor: pointer;
 border-radius: 40px;
 margin-top: 0vh;
-margin-left: 0vh;
-height: 10px;
+margin-left: 15vh;
+height: 35px;
 }
 .homepagebtn{
 position:relative;
@@ -145,7 +145,8 @@ border:none;
 cursor: pointer;
 border-radius: 40px;
 margin-top: 0vh;
-margin-left: 5vh;
+margin-left: -25vh;
+margin-bottom: 5px;
 }
 
 .showBestTimeButton{
@@ -162,7 +163,7 @@ border:none;
 cursor: pointer;
 border-radius: 40px;
 margin-top: 0vh;
-margin-left: 5vh;
+margin-left: 3vh;
 }
 
 .save-btn:hover{
@@ -175,13 +176,13 @@ margin-top: 0vh;
 }
 .avform{
 position: relative;
-margin-left: 8vh;
+margin-left: 13vh;
 margin-top: 0vh;
 }
 
 .datepicker{
 position: relative;
-margin-left: 20vh;
+margin-left: 25vh;
 margin-top: 2vh;
 }
 .SubmitEvent{
@@ -195,10 +196,19 @@ width:100px;
 border:none;
 cursor: pointer;
 border-radius: 40px;
-margin-left:30vh;
+margin-left:36vh;
 }
 
 .savedPopup{
-margin-left: 25vh;
+margin-left: 1vh;
 
+}
+
+.bestRec{
+  margin-left: 25vh;
+}
+
+.avform p{
+  margin-top: 2px;
+  margin-left: 20vh;
 }

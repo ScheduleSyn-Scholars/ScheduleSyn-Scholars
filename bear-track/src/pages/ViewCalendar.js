@@ -342,6 +342,24 @@ const ViewCalendar = () => {
         <button className="saveButton2" type="button" onClick={() => updateAvailability()}>
           Save
         </button>
+        <button
+          className="showBestTimeButton"
+          type="button"
+          onClick={handleShowBestTime}
+        >
+          Show Best Time
+        </button>
+
+        {bestTime && (
+  <div classname = 'bestTimeRec'>
+    <p>Best Time to Meet:</p>
+    <p>Day: {bestTime.day}</p>
+    <p>Time:{bestTime.start !== undefined ? convertTo12HourFormat(bestTime.start) : ''}
+            {bestTime.start !== undefined && bestTime.end !== undefined ? '-' : ''}
+            {bestTime.end !== undefined ? convertTo12HourFormat(bestTime.end) : ''}
+          </p>
+        </div>
+      )}
         {showSavedPopup && (
         <div className="savedPopup">
           <p>Availability saved!</p>
@@ -371,27 +389,9 @@ dateFormat="Pp"
         <Link to = "/HomePage"> <button className='homepagebtn'>Homepage</button>  </Link>
         {/* "Saved" popup */}
       
-        <button
-          className="showBestTimeButton"
-          type="button"
-          onClick={handleShowBestTime}
-        >
-          Show Best Time
-        </button>
+        
 
-        {bestTime && (
-  <div>
-    <p>Best Time to Meet:</p>
-    <p>Day: {bestTime.day}</p>
-    <p>Time:</p>
-          <p>
-            {/* Convert the start and end times to 12-hour format */}
-            Start: {bestTime.start !== undefined ? convertTo12HourFormat(bestTime.start) : ''}
-            {bestTime.start !== undefined && bestTime.end !== undefined ? '-' : ''}
-            {bestTime.end !== undefined ? convertTo12HourFormat(bestTime.end) : ''}
-          </p>
-        </div>
-      )}
+        
       
       </div>
     </div>    
