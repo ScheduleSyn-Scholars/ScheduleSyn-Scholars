@@ -153,32 +153,6 @@ margin-top:0vh;
 margin-left:0vh;
 }
 
-.mutual-calendar-button {
-background-color: #0E724C;
-text-align: center;
-color: white;
-font-size: 20px;
-font-family: 'Times New Roman', Times, serif;
-font-weight: 500;
-word-wrap: "break-word";
-width: 150px;
-height: 35px;
-padding: 10px;
-cursor: pointer;
-border-radius: 15px;
-margin-bottom: 25px; /* For adjusting the spacing between calendar buttons */
-justify-content: center;
-border: none;
-text-decoration: none;
-align-items: center;
-line-height: 10px;
-}
-
-.user-calendars {
-  overflow-y: scroll;
-  height: 150px;
-  margin-left:4vh;
-}
  .bell{
   position: relative;
   top:10px;
@@ -202,7 +176,7 @@ line-height: 10px;
   font-weight: bold;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
  }
- .mutual-calendar-button {
+ .mutual-calendar-button { /*DEMO*/
   background-color: #0E724C;
   text-align: center;
   color: white;
@@ -217,6 +191,12 @@ line-height: 10px;
   cursor: pointer;
   border-radius: 15px;
   margin-bottom: 8px; /* Adjust the spacing between calendar buttons */
+}
+
+.user-calendars {
+  overflow-y: scroll;
+  height: 600px;
+  margin-left:4vh;
 }
 
 /* Additional styling if needed */
