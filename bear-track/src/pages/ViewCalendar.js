@@ -16,7 +16,6 @@ const ViewCalendar = () => {
     times: {},
   });
   const [teamAvailability, setTeamAvailability] = useState([]);
-  const [bestTimeToMeet, setBestTimeToMeet] = useState(null);
   const [showBestTime, setShowBestTime] = useState(false);
   const [bestTime, setBestTime] = useState(null);
   const [selectedDateTime, setSelectedDateTime] = useState(new Date());
@@ -264,8 +263,6 @@ const ViewCalendar = () => {
       // Fetch team availability
       const teamAvailabilityData = await fetchTeamAvailability(calendarId);
   
-      // Find common availability
-      findCommonAvailability(updatedAvailability, teamAvailabilityData);
   
       // Reset showBestTime state
       setShowBestTime(false);
@@ -278,15 +275,6 @@ const ViewCalendar = () => {
   
     } catch (error) {
       console.error('Error updating availability:', error);
-    }
-  };
-
-  const findCommonAvailability = () => {
-    // Find common availability logic
-    try {
-      // ... (Your logic for finding common availability)
-    } catch (error) {
-      console.error('Error in findCommonAvailability:', error);
     }
   };
 
@@ -351,7 +339,7 @@ const ViewCalendar = () => {
         </button>
 
         {bestTime && (
-  <div classname = 'bestTimeRec'>
+  <div classname = 'bestRec'>
     <p>Best Time to Meet:</p>
     <p>Day: {bestTime.day}</p>
     <p>Time:{bestTime.start !== undefined ? convertTo12HourFormat(bestTime.start) : ''}
@@ -381,18 +369,9 @@ dateFormat="Pp"
 <button type="button" onClick={handleCreateEvent}>
   Submit Event
 </button>
-</div>
-
-
-
-        
+</div>        
         <Link to = "/HomePage"> <button className='homepagebtn'>Homepage</button>  </Link>
-        {/* "Saved" popup */}
-      
-        
 
-        
-      
       </div>
     </div>    
   );
