@@ -24,11 +24,13 @@ The GGC Scheduling App is a product that aims to simplify scheduling, making it 
   
     >`git clone https://github.com/ScheduleSyn-Scholars/ScheduleSyn-Scholars.git`
  
-3. Run the npm installs:
+2. Run the npm installs:
    
    >`npm install`
    
    >`npm install react-spinners`
    
-5. After all Packages are installed, You can run the program by entering `npm start` in the terminal
+3. For the Testing portion, you must run `npm i selenium-webdriver serve CLI` command in your terminal before starting the test.
+   
+4. After all Packages are installed, You can run the program by entering `npm start` in the terminal
    
