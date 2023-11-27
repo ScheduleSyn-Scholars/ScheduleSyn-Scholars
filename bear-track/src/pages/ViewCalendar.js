@@ -348,7 +348,7 @@ dateFormat="Pp"
         <button className="saveButton" type="button" onClick={() => updateAvailability()}>
           Save
         </button>
-        <Link to = "/HomePage"> <button className='buttons'>Homepage</button>  </Link>
+        <Link to = "/HomePage"> <button className='homepagebtn'>Homepage</button>  </Link>
 
         <button
           className="showBestTimeButton"
