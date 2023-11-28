@@ -6,6 +6,7 @@ import { useUser } from './UserContext';
 import AvailabilityForm from '../components/Calendar/AvailabilityForm';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import './ViewCalendar.css';
 
 const ViewCalendar = () => {
   const { calendarId, calendarName } = useParams();
@@ -15,10 +16,10 @@ const ViewCalendar = () => {
     times: {},
   });
   const [teamAvailability, setTeamAvailability] = useState([]);
-  const [bestTimeToMeet, setBestTimeToMeet] = useState(null);
   const [showBestTime, setShowBestTime] = useState(false);
   const [bestTime, setBestTime] = useState(null);
   const [selectedDateTime, setSelectedDateTime] = useState(new Date());
+  const [showSavedPopup, setShowSavedPopup] = useState(false);
 
   const firestore = firebase.firestore();
 
@@ -262,23 +263,18 @@ const ViewCalendar = () => {
       // Fetch team availability
       const teamAvailabilityData = await fetchTeamAvailability(calendarId);
   
-      // Find common availability
-      findCommonAvailability(updatedAvailability, teamAvailabilityData);
   
       // Reset showBestTime state
       setShowBestTime(false);
+
+      setShowSavedPopup(true);
+
+      setTimeout(() => {
+        setShowSavedPopup(false);
+      }, 2000);
   
     } catch (error) {
       console.error('Error updating availability:', error);
-    }
-  };
-
-  const findCommonAvailability = () => {
-    // Find common availability logic
-    try {
-      // ... (Your logic for finding common availability)
-    } catch (error) {
-      console.error('Error in findCommonAvailability:', error);
     }
   };
 
@@ -313,40 +309,27 @@ const ViewCalendar = () => {
     }
   }
 
+  const convertTo12HourFormat = (time) => {
+    const hour = parseInt(time, 10);
+    const isPM = hour >= 12;
+    const formattedHour = isPM ? (hour === 12 ? 12 : hour - 12) : hour;
+    return `${formattedHour}:00 ${isPM ? 'PM' : 'AM'}`;
+  };
+
   return (
     <div className="page">
       <div className="pageTitle">{calendarName}</div>
-
-      
-          <div className="profilePicture">
-<Link to="/MyProfile">
-  {user && user.image && <img alt="User profile" src={user.image} className='profilePhoto'/>}
-</Link>
-<div className='username'>{user && user.userName}</div>
-</div>
-
-      
+     
 <div className="meeting-section">
-<DatePicker 
-selected={selectedDateTime}
-onChange={(date) => setSelectedDateTime(date)}
-inline
-showTimeSelect
-dateFormat="Pp"
- />
- <button type="button" onClick={handleCreateEvent}>
-  Submit Event
-</button>
-        <AvailabilityForm
+<div className="avform">
+<AvailabilityForm
           className="avform"
           availability={availability}
           onAvailabilityChange={handleAvailabilityChange}
         />
-        <button className="saveButton" type="button" onClick={() => updateAvailability()}>
+        <button className="saveButton2" type="button" onClick={() => updateAvailability()}>
           Save
         </button>
-        <Link to = "/HomePage"> <button className='buttons'>Homepage</button>  </Link>
-
         <button
           className="showBestTimeButton"
           type="button"
@@ -356,17 +339,39 @@ dateFormat="Pp"
         </button>
 
         {bestTime && (
-  <div>
+  <div classname = 'bestRec'>
     <p>Best Time to Meet:</p>
     <p>Day: {bestTime.day}</p>
-    <p>Time:</p>
-    <p>
-      Start: {bestTime.start !== undefined ? `${bestTime.start}:00` : ''}
-      {bestTime.start !== undefined && bestTime.end !== undefined ? '-' : ''}
-      {bestTime.end !== undefined ? `${bestTime.end}:00` : ''}
-    </p>
-      </div>
+    <p>Time:{bestTime.start !== undefined ? convertTo12HourFormat(bestTime.start) : ''}
+            {bestTime.start !== undefined && bestTime.end !== undefined ? '-' : ''}
+            {bestTime.end !== undefined ? convertTo12HourFormat(bestTime.end) : ''}
+          </p>
+        </div>
       )}
+        {showSavedPopup && (
+        <div className="savedPopup">
+          <p>Availability saved!</p>
+        </div>
+      )}
+        </div>
+
+<div className="datepicker">
+<DatePicker
+classname="datepicker"
+selected={selectedDateTime}
+onChange={(date) => setSelectedDateTime(date)}
+inline
+showTimeSelect
+dateFormat="Pp"
+ />
+</div>
+<div className="SubmitEvent">
+<button type="button" onClick={handleCreateEvent}>
+  Submit Event
+</button>
+</div>        
+        <Link to = "/HomePage"> <button className='homepagebtn'>Homepage</button>  </Link>
+
       </div>
     </div>    
   );

@@ -225,7 +225,7 @@ const handleBellIconClick = async () => {
         onClose={() => setShowNotification(false)}
       />
       )}
-      <h1>My Calendar</h1>
+      <h1>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </h1>
   
       <div className="left-panel"></div>
       <div className="logo-photo">
