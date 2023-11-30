@@ -1,11 +1,10 @@
 *
 {
+    margin: 0;
+    padding: 0;
     font-family: sans-serif;
     box-sizing: border-box;
-    font-style: oblique;
-    font-weight: bolder;
 }
-
 body
 {
     display: flex;
@@ -15,42 +14,45 @@ body
 }
 .form
 {
-    max-width: 100%;
-    padding: 20vh 10vh;
-    background: #bbc7a0;
-    border-radius: 1vh;
+    padding: 20px 30px;
+    background: #f4f4f4;
+    border-radius: 5px;
 }
 .form .container
 {
-    max-width: auto;
+    max-width: 100%;
 }
 .form .container form
 {
-    margin: 0.1vh 50vh;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    background-color: rgb(14, 89, 64);
 }
 .form .container form input
 {
-    margin: 1vh 1vh;
-    padding: 0.5vh 1vh;
-    width: 30vh;
-    background: rgb(222, 235, 225);
-    border: rgb(31, 200, 79);
+    margin: 10px 20px;
+    padding: 10px 10px;
+    width: 300px;
+    background: none;
+    border: none;
     outline: none;
-    border-bottom: 0.3vh solid #000;
+    border-bottom: 1px solid #000;
     color: #0d0d0d
 }
 
+/* Sign Up & Go Back buttons */
 .form .container form button
 {
-    width: 10vh;
-    padding: 1vh 1vh;
-    margin-left: 3vh;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: #0cc0df;
+        font-size:35px;
+        color: #696969;
+        font-family: 'Times New Roman', Times, serif;
+        font-weight:700;
+        margin-left: 10vh;
+        border-radius: 15px;
+        padding: 5px;
+        font-size: 20px;
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        margin-bottom: 5vh;
+        margin-top: 0vh;
+        text-decoration: none;
 }

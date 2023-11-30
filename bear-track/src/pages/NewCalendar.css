@@ -1,29 +1,27 @@
-.addPeople{
-    border:none;
-    text-decoration: underline;
+.addPeople {
+    border: none;
     color: gray;
     font-weight: 500;
-    font-size: 35px;
+    font-size: 20px;
     font-family: 'Times New Roman', Times, serif;
-}
-.Website-Logo{
-    position: relative;
-    top : 2px;
-    left: 50px;
-    width:200px;
-    height:215px;
-    border-radius:50%;
-    box-shadow: 0 0 0 rgba(0,0,0,0.25);
-}
-.title{
-    position:relative;
-    margin-top: 15px;
-    left: 60px;
-  color:#0E724C;
-  font-size:50px;
-  font-family: 'Times New Roman', Times, serif;
-  word-wrap: break-word;
-}
+    margin-left: 20vh;
+    text-decoration: none; /* Remove underline */
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    margin-top: 0vh;
+  }
+  
+  /* Apply styles when the input is focused */
+  .addPeople:focus {
+    outline: none; /* Remove the default focus outline */
+  }
+  
+  /* Apply styles to the placeholder text */
+  .addPeople::placeholder {
+    color: #7B7B7B; /* Set the color of the placeholder text */
+  }
+
+
 .Calendar-title-input{
     font-size:35px;
     color: #696969;
@@ -33,8 +31,27 @@
     word-wrap: break-word;
     border: none;
     outline:none;
-
+    margin-left: 28vh;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    margin-bottom: 5vh;
+    margin-top: 0vh;
+    text-decoration: none;
 }
+
+/* Apply styles when the input is focused */
+.Calendar-title-input:focus::placeholder {
+    color: transparent; /* Make the placeholder text transparent */
+  }
+  
+  /* Apply styles to the placeholder text */
+  .Calendar-title-input::placeholder {
+    color: #7B7B7B; /* Set the color of the placeholder text */
+  }
+
 .calendar-list{
     position: relative;
     left:1300px;
@@ -45,24 +62,40 @@
     font-weight: 500;
     word-wrap:break-word;
 }
-.left-side-panel{
-    position: absolute;
-    left:250px;
-    top:40px;
-    border-right: #666666 solid;
-    border-width: 2px;
-    height:650px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+.all-side-panel{
+    position:relative;
+    background-color: white;
+    height:90vh;
+    width: 0vh;
+    margin-top: 0%;
+  }
+
+.buttons {
+        text-align: center;
+        background-color: #0E724C;
+        color: white;
+        font-weight: 500;
+        font-size: 25px;
+        font-family: 'Times New Roman', Times, serif;
+        word-wrap: break-word;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        width: 150px;
+        height: 35px;
+        border-radius: 15px;
+        position: relative;
+        margin-top: 0vh;
+        margin-bottom: 0vh;
+        margin-left: 85vh;
+        line-height: 10px;
+         /* Remove underline */
+      }
+
+.buttons:hover{
+    background-color: #4CAF50;
 }
-.right-side-panel{
-    position: absolute;
-    left: 250px;
-    top:40px;
-    border-left: #666666 solid;
-    border-width: 2px;
-    height:650px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
-}
+
 .create-btn{
     text-align: center;
     background-color: #0E724C;
@@ -74,32 +107,26 @@
     padding: 10px;
     border: none;
     cursor: pointer;
-    width:200px;
+    width:150px;
+    height:35px;
     border-radius: 15px;
     position: relative;
-    top: -50px;
-    left:575px;
+    margin-top: 0vh;
+    margin-bottom: 5vh;
+    margin-left: 85vh;
+    display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.newcalendar-btn{
-    background-color: #0E724C;
-    color: white;
-    text-align: center;
-    font-size: 25px;
-    font-weight: 500;
-    font-family: 'Times New Roman', Times, serif;
-    word-wrap: break-word;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 15px;
-    position:absolute;
-    top:625px;
-    left:1275px;
-    
+
+.allbuttons{
+    margin-top: 50vh;
 }
-.newcalendar-btn:hover{
-    background-color: #4CAF50;
+.textinput{
+    height:1vh;
 }
+
+
 .create-btn:hover{
     background-color: #4CAF50;
 }
@@ -123,6 +150,22 @@
     color:red;
     font-size:35px;
     font-weight:500;
+    animation: cssAnimation 0s ease-in 5s forwards;
+    animation-fill-mode: forwards;
+}
+.limit-message{
+    text-decoration: none;
+    color:red;
+    font-size: 35px;
+    font-weight:500;
+    animation: cssAnimation 0s ease-in 5s forwards;
+    animation-fill-mode: forwards;
+}
+.add-message{
+    text-decoration: none;
+    color:green;
+    font-size: 35px;
+    font-weight: 500;
     animation: cssAnimation 0s ease-in 5s forwards;
     animation-fill-mode: forwards;
 }

@@ -44,4 +44,3 @@ describe('SignUp Component',() =>{
         await waitFor(() => expect(alert).toHaveBeenCalledWith('Error detected'));
     });
 });
-

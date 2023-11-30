@@ -1,95 +1,422 @@
-import React from "react";
-import './ViewCalendar.css';
-import { useState, useEffect } from 'react';
-import firebase from "../config/firebase";
+import React, { useEffect, useState } from 'react';
+import firebase from '../config/firebase';
 import 'firebase/compat/firestore';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { useUser } from './UserContext';
+import AvailabilityForm from '../components/Calendar/AvailabilityForm';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+//import {toast, ToastContainer} from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
+
 
 const ViewCalendar = () => {
-    const [username, setUName] = useState('');
-    const [userID, setUserID] = useState('');
-    const [email, setEmailAddress] = useState('');
 
-    const firestore = firebase.firestore();
-    useEffect(() => {
-        const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
-            if(user){
-                const uuid = user.uid;
-                dataReading(uuid);
-            }
-        });
-        return () => unregisterAuthObserver();
-    }, []);
+  const { calendarId, calendarName } = useParams();
+  const user = useUser();
+  const [availability, setAvailability] = useState({
+    selectedDays: [],
+    times: {},
+  });
+  const [teamAvailability, setTeamAvailability] = useState([]);
+  const [bestTimeToMeet, setBestTimeToMeet] = useState(null);
+  const [showBestTime, setShowBestTime] = useState(false);
+  const [bestTime, setBestTime] = useState(null);
+  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
 
-    const uuid = firebase.auth().currentUser.uid;
+  const firestore = firebase.firestore();
 
-    const dataReading = async(uuid) =>{
-        try {
-            const userRef = firestore.collection('users').doc(uuid);
-            console.log(uuid);
-            const userDoc = await userRef.get();
-        
-            if (userDoc.exists) {
-              console.log('Printing from loadDoc: ',userDoc.data())
-              const uName = userDoc.data().userName;
-              const userID = userDoc.data().userID;
-              const eAddress = userDoc.data().emailAddress;
-        
-            
-              setUName(uName);
-              setUserID(userID);
-              setEmailAddress(eAddress);
-              console.log(uName);
-      
-            } else {
-              console.log('User document not found.');
-            }
-          } catch (error) {
-            console.error('Error loading Firestore document:', error);
-          }
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user) {
+        await fetchUserAvailability(calendarId, user.uid);
+        const teamAvailabilityData = await fetchTeamAvailability(calendarId);
+        fetchTeamAvailabilityOnCommonDays(teamAvailabilityData);
+      }
     };
-    console.log(firebase.auth().currentUser.uid);
-    dataReading(uuid);
-    
+  
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calendarId, user]);
 
-    return(
-        <div className = "page">
-        <div className="pageTitle">
-            Project
-        </div>
-        <div className="reminder">
-            <div className="reminder-text">Reminder: <button className="save-btn">SAVE</button></div>
-        </div>
-        <div className = "left-side-panel"></div>
-            <div className = "Logo">
-            <Link to = "/homepage">
-        <img src = "BearLogo.png" alt = "Logo" className="siteLogo"/>
-        </Link>
-        <div className="WebsiteName">DataWise</div>
-            </div>
+  const handleAvailabilityChange = (newAvailability) => {
+    // Handle changes in availability form
+    const updatedAvailability = {
+      selectedDays: Object.keys(newAvailability.times || {}),
+      times: newAvailability.times || {},
+    };
+    setAvailability(updatedAvailability);
+  };
 
-       {/* <Link to = "/MyProfile">
-        <img src = "Screenshot 2023-09-15 at 1.46 1.png" alt = "User choice" className="profilePicture"/>
-        </Link>
-        <div className="username">
-            {username}
-        </div> */}
+  const fetchUserAvailability = async (calendarId, uid) => {
+    try {
+      const availabilityRef = firestore
+        .collection('calendars')
+        .doc(calendarId)
+        .collection('availability')
+        .doc(uid);
 
-        <Link to = "/MyProfile">
-          <div>
-            <img alt = "User profile" src = "./Screenshot 2023-09-15 at 1.46 1.png" className='user-photo'/>
-      </div>
-          </Link>
+      const availabilitySnapshot = await availabilityRef.get();
 
-        <div className='profileName' >{username}</div>
+      if (availabilitySnapshot.exists) {
+        const availabilityData = availabilitySnapshot.data();
+        setAvailability(availabilityData);
+      }
+    } catch (error) {
+      console.error('Error fetching user availability:', error);
+    }
+  };
+
+  const fetchTeamAvailability = async (calendarId) => {
+    try {
+      const teamAvailabilityRef = firestore
+        .collection('calendars')
+        .doc(calendarId)
+        .collection('availability');
+  
+      const teamAvailabilitySnapshot = await teamAvailabilityRef.get();
+      const teamAvailabilityData = teamAvailabilitySnapshot.docs
+        .map((doc) => ({ uid: doc.id, ...doc.data() }))
+        .filter((teamMember) => teamMember.selectedDays && teamMember.selectedDays.length > 0);
+  
+      setTeamAvailability(teamAvailabilityData);
+  
+      return teamAvailabilityData; // Add this line
+    } catch (error) {
+      console.error('Error fetching team availability:', error);
+      return [];
+    }
+  };
+
+  const fetchTeamAvailabilityOnCommonDays = async (commonDays) => {
+    try {
+      const teamAvailabilityData = await fetchTeamAvailability(calendarId);
+  
+      // Filter the team availability data to include only common days
+      const teamAvailabilityOnCommonDays = teamAvailabilityData.map((teamMember) => ({
+        uid: teamMember.uid,
+        times: commonDays.reduce((acc, day) => ({ ...acc, [day]: teamMember.times[day] || [] }), {}),
+      }));
+  
+      console.log('Team Availability On Common Days:', teamAvailabilityOnCommonDays);
+      return teamAvailabilityOnCommonDays;
+    } catch (error) {
+      console.error('Error fetching team availability on common days:', error);
+      return [];
+    }
+  };
+
+  const handleShowBestTime = async () => {
+    try {
+      console.log('Handling Show Best Time...');
+      await findBestTimeToMeet();
+    } catch (error) {
+      console.error('Error in handleShowBestTime:', error);
+    }
+  };
+  
+  const findBestTimeToMeet = async () => {
+    // Find common days among all users
+    console.log('Inside findBestTimeToMeet');
+    const commonDays = findCommonDays();
+  
+    if (commonDays.length === 0) {
+      setBestTime(null);
+      return;
+    }
+  
+    // Find overlapping time slots on common days
+    const overlappingTimes = await findOverlappingTimes(commonDays);
+  
+    // Determine the best time to meet
+    const bestTime = processOverlappingTimes(overlappingTimes);
+  
+    // Set the best time to meet in the state
+    setBestTime(bestTime);
+  };
+
+  const compareTimeSlots = (commonDays, teamAvailabilityData) => {
+    console.log('Raw Team Availability Data:', teamAvailabilityData);
+  
+    // Ensure teamAvailabilityData is an array
+    const teamAvailabilityArray = Array.isArray(teamAvailabilityData)
+      ? teamAvailabilityData
+      : Object.values(teamAvailabilityData);
+  
+    console.log('Team Availability Array:', teamAvailabilityArray);
+  
+    // Compare time slots for each common day
+    const overlappingTimes = commonDays.reduce((acc, day) => {
+      const currentUserTimes = availability.times[day] || [];
+      const teamMemberTimes = teamAvailabilityArray.reduce((times, teamMember) => {
+        return times.concat(teamMember.times[day] || []);
+      }, []);
+  
+      // Find overlapping times for each team member
+      const overlappingTimesForDay = teamMemberTimes.filter((teamTime) =>
+        currentUserTimes.some((userTime) => areTimeSlotsOverlapping(userTime, teamTime))
+      );
+  
+      // Set day explicitly
+      acc[day] = overlappingTimesForDay;
+  
+      return acc;
+    }, {});
+  
+    console.log('Overlapping Times:', overlappingTimes);
+  
+    return overlappingTimes;
+  };
+  
+  
+
+  const findCommonDays = () => {
+    // Extract selected days of the current user
+    const currentUserDays = availability.selectedDays || [];
+
+    // Extract selected days of team members
+    const teamDays = teamAvailability.map((teamMember) => teamMember.selectedDays || []);
+
+    // Find the common days among all users
+    const commonDays = currentUserDays.filter((day) => teamDays.every((teamDays) => teamDays.includes(day)));
+
+    return commonDays;
+  };
+
+  const findOverlappingTimes = async (commonDays) => {
+    const teamAvailabilityOnCommonDays = await fetchTeamAvailabilityOnCommonDays(commonDays);
+  
+    const overlappingTimes = compareTimeSlots(commonDays, teamAvailabilityOnCommonDays);
+  
+    console.log('Overlapping Times:', overlappingTimes);
+    return overlappingTimes;
+  };
+
+  const areTimeSlotsOverlapping = (time1, time2) => {
+    const start1 = new Date(`2000-01-01T${time1.start}`);
+    const end1 = new Date(`2000-01-01T${time1.end}`);
+    const start2 = new Date(`2000-01-01T${time2.start}`);
+    const end2 = new Date(`2000-01-01T${time2.end}`);
+
+    return start1 < end2 && end1 > start2;
+  };
+
+ 
+  const processOverlappingTimes = (overlappingTimes) => {
+    // Process overlapping times to find the best time to meet
+    // This includes finding the latest start time and earliest end time for each day
+  
+    console.log('Before loop - overlappingTimes:', overlappingTimes);
+  
+    const bestTime = Object.entries(overlappingTimes).reduce((acc, [day, times]) => {
+      console.log('Inside loop - day:', day, 'times:', times);
+  
+      if (!acc.day || times.length > acc.times.length) {
+        acc.day = day;
+        acc.times = times;
+      } else if (times.length === acc.times.length) {
+        // If the same number of overlapping slots, consider the latest start time
+        const latestStartTime = Math.max(...times.map((time) => parseInt(time.start, 10)));
+        const currentLatestStartTime = Math.max(...acc.times.map((time) => parseInt(time.start, 10)));
+  
+        if (latestStartTime > currentLatestStartTime) {
+          acc.day = day;
+          acc.times = times;
+        }
+      }
+      return acc;
+    }, { day: null, times: [] });
+  
+    // Find the latest start time and earliest end time
+    const latestStartTime = Math.max(...bestTime.times.map((time) => parseInt(time.start, 10)));
+    const earliestEndTime = Math.min(...bestTime.times.map((time) => parseInt(time.end, 10)));
+  
+    // Set the overall start and end times
+    bestTime.start = latestStartTime;
+    bestTime.end = earliestEndTime;
+  
+    console.log('After loop - bestTime:', bestTime);
+  
+    return bestTime;
+  };
+
+  
+  const updateAvailability = async () => {
+    try {
+      const availabilityRef = firestore
+        .collection('calendars')
+        .doc(calendarId)
+        .collection('availability')
+        .doc(user.uid);
+
+  
+      // Update selectedDays based on times object
+      const updatedAvailability = {
+        ...availability,
+        selectedDays: Object.keys(availability.times || {}),
+      };
+
+      await availabilityRef.set({ ...updatedAvailability }, { merge: true });
+      
+      console.log('availRef" ', updatedAvailability);
+      console.log(calendarId);
+      await availabilityRef.update({ ...updatedAvailability });
+      console.log("Adding availability for: ", user.uid);
+      console.log('Availability updated successfully!');
+  
+      // Fetch team availability
+      const teamAvailabilityData = await fetchTeamAvailability(calendarId);
+  
+      // Find common availability
+      findCommonAvailability(updatedAvailability, teamAvailabilityData);
+  
+      // Reset showBestTime state
+      setShowBestTime(false);
+  
+    } catch (error) {
+      console.error('Error updating availability:', error);
+    }
+  };
+
+  const findCommonAvailability = () => {
+    // Find common availability logic
+    try {
+      // ... (Your logic for finding common availability)
+    } catch (error) {
+      console.error('Error in findCommonAvailability:', error);
+    }
+  };
+
+
+  const createEvent = async (eventData) => {
+    try {
+      const eventsRef = firestore
+      .collection('calendars')
+      .doc(calendarId)
+      .collection('events');
+
+      await eventsRef.add(eventData);
+
+      console.log('Event created successfully!');
+    }catch (error) {
+      console.error('Error creating event:', error);
+    }
+  }
+
+  const handleCreateEvent = async () => {
+    try {
+      const eventData = {
+        name: calendarName, // Use calendarName directly
+        dateTime: selectedDateTime,
+        creator: user.uid,
+        attendees: [user.uid],
+      };
+      console.log('Event Data:', eventData);
+      await createEvent(eventData);
+    } catch (error) {
+      console.error('Error in handleCreateEvent:', error);
+    }
+  }
+
+
+
+
+
+const navigate = useNavigate();
+const handleDeleteCalendar = async (calendarID, calendarName) => {
+  
+  const confirmDeletion = window.confirm("Are you sure you want to delete?");
+  if (confirmDeletion) {
+    const userDocRef = firestore.collection('users').doc(user.uid);
+
+    // Remove the specific calendar entry from the Calendars array
+    userDocRef.update({
+      calendars: firebase.firestore.FieldValue.arrayRemove({
+        id: calendarID,
+        calendarName: calendarName,
+      })
+    })
+    .then(() => {
+      //toast.success(`Calendar '${calendarName}' deleted successfully!`);
+      console.log(`Calendar with ID '${calendarID}' deleted successfully.`);
+      navigate('/homepage');
+    })
+    .catch((error) => {
+      console.error('Error deleting calendar:', error);
+    });
+  } else {
+    //toast.info('Deletion canceled');
+  }
+};
+
+
+
+
+
+
+
+  return (
+    <div className="page">
+      <div className="pageTitle">{calendarName}</div>
+
+      
+          <div className="profilePicture">
+<Link to="/MyProfile">
+  {user && user.image && <img alt="User profile" src={user.image} className='profilePhoto'/>}
+</Link>
+<div className='username'>{user && user.userName}</div>
+</div>
+
+      
+<div className="meeting-section">
+<DatePicker 
+selected={selectedDateTime}
+onChange={(date) => setSelectedDateTime(date)}
+inline
+showTimeSelect
+dateFormat="Pp"
+ />
+ <button type="button" onClick={handleCreateEvent}>
+  Submit Event
+</button>
+        <AvailabilityForm
+          className="avform"
+          availability={availability}
+          onAvailabilityChange={handleAvailabilityChange}
+        />
+        <button className="saveButton" type="button" onClick={() => updateAvailability()}>
+          Save
+        </button>
+
+        
+        <button onClick={() => handleDeleteCalendar(calendarId, calendarName)}>Delete</button>
         
 
-        <div className = "right-side-panel"></div>
-            <div className="calName">Mutual Calendar</div>
-            <Link to = "/NewCalendar">
-            <button className="newCalBTN">New Calendar</button>
-            </Link>
-        </div>
-    );
-}
+        <Link to = "/HomePage"> <button className='buttons'>Homepage</button>  </Link>
+
+        <button
+          className="showBestTimeButton"
+          type="button"
+          onClick={handleShowBestTime}
+        >
+          Show Best Time
+        </button>
+
+        {bestTime && (
+  <div>
+    <p>Best Time to Meet:</p>
+    <p>Day: {bestTime.day}</p>
+    <p>Time:</p>
+    <p>
+      Start: {bestTime.start !== undefined ? `${bestTime.start}:00` : ''}
+      {bestTime.start !== undefined && bestTime.end !== undefined ? '-' : ''}
+      {bestTime.end !== undefined ? `${bestTime.end}:00` : ''}
+    </p>
+      </div>
+      )}
+      </div>
+    </div>    
+  );
+};
+
 export default ViewCalendar;
